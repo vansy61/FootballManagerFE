@@ -1,0 +1,38 @@
+#home {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+#home-bg-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+#home-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+#logo {
+    max-width: 400px;
+}
+
+.btn-login {
+    background: linear-gradient(to right, #0f0c29, #302b63, #24243e); 
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
