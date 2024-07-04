@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Bootstrap demo</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+    <body class="bg-body-tertiary">
+        <div id="menu"></div>
+
+        <main class="mt-3">
+            <div class="container">
+                <div class="content ">
+                    <div class="p-3 bg-white shadow-sm d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0">Quản Lý Cầu Thủ</h4>
+                        <button class="btn btn-primary">Thêm mới cầu thủ</button>
+                    </div>
+
+                    <div class="p-3 bg-white shadow-sm mt-4">
+                        <form action="/documents" class="d-flex justify-content-between mb-4" id="document-search">
+                            <input type="hidden" name="page" id="page" value="0">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <input type="text" name="search" class="form-control submit-on-enter" placeholder="Tìm kiếm theo mã, tên, mô tả, enter để tìm">
+                                <select name="typeId" class="form-select ms-3 w-50 submit-on-change">
+                                    <option value="">Phân Loại</option>
+                                    <option value="1">sdadad (6)</option><option value="2">hello (1)</option><option value="3">type 2 (1)</option>
+                                </select>
+                            </div>
+                            <select name="sort" class="form-select ms-3 w-25 submit-on-change">
+                                <option value="" selected="selected">Sắp xếp</option>
+                                <option value="name asc">Tên tăng dần</option>
+                                <option value="name desc">Tên giảm dần</option>
+                                <option value="code asc">Mã tăng dần</option>
+                                <option value="code desc">Mã giảm dần</option>
+                                <option value="year asc">Năm tăng dần</option>
+                                <option value="year desc">Năm giảm dần</option>
+                            </select>
+
+                        </form>
+
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Mã</th>
+                                <th>Tên</th>
+                                <th>Năm</th>
+                                <th>Mô tả</th>
+                                <th>Phân loại</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody id="table-document-body">
+                            <tr>
+                                <td>0533</td>
+                                <td>a</td>
+                                <td>1998</td>
+                                <td>hello serverlet</td>
+                                <td>sdadad</td>
+                                <td>
+                                    <a href="/documents/28" data-id="28" class="btn btn-outline-primary edit-document">Sửa</a>
+                                    <a href="/documents/28" class="btn btn-outline-danger delete-document">Xóa</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>MS-0001</td>
+                                <td>Hay Nhạc</td>
+                                <td>2000</td>
+                                <td>kooo jưadawd</td>
+                                <td>sdadad</td>
+                                <td>
+                                    <a href="/documents/26" data-id="26" class="btn btn-outline-primary edit-document">Sửa</a>
+                                    <a href="/documents/26" class="btn btn-outline-danger delete-document">Xóa</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>MS-0001</td>
+                                <td>Hay Nhạc</td>
+                                <td>1998</td>
+                                <td>111</td>
+                                <td>hello</td>
+                                <td>
+                                    <a href="/documents/25" data-id="25" class="btn btn-outline-primary edit-document">Sửa</a>
+                                    <a href="/documents/25" class="btn btn-outline-danger delete-document">Xóa</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>MS-0001</td>
+                                <td>Lê Văn Cường</td>
+                                <td>1998</td>
+                                <td>ưqewqe</td>
+                                <td>sdadad</td>
+                                <td>
+                                    <a href="/documents/24" data-id="24" class="btn btn-outline-primary edit-document">Sửa</a>
+                                    <a href="/documents/24" class="btn btn-outline-danger delete-document">Xóa</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>MS-0001</td>
+                                <td>Hay Nhạc</td>
+                                <td>1998</td>
+                                <td>11</td>
+                                <td>type 2</td>
+                                <td>
+                                    <a href="/documents/22" data-id="22" class="btn btn-outline-primary edit-document">Sửa</a>
+                                    <a href="/documents/22" class="btn btn-outline-danger delete-document">Xóa</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>MS-0001</td>
+                                <td>Hay Nhạc</td>
+                                <td>1998</td>
+                                <td>11</td>
+                                <td>sdadad</td>
+                                <td>
+                                    <a href="/documents/21" data-id="21" class="btn btn-outline-primary edit-document">Sửa</a>
+                                    <a href="/documents/21" class="btn btn-outline-danger delete-document">Xóa</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>MS-0001</td>
+                                <td>Hay Nhạc</td>
+                                <td>1998</td>
+                                <td>11</td>
+                                <td>sdadad</td>
+                                <td>
+                                    <a href="/documents/17" data-id="17" class="btn btn-outline-primary edit-document">Sửa</a>
+                                    <a href="/documents/17" class="btn btn-outline-danger delete-document">Xóa</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>MS-0001</td>
+                                <td>Hay Nhạc</td>
+                                <td>1998</td>
+                                <td>11</td>
+                                <td>sdadad</td>
+                                <td>
+                                    <a href="/documents/12" data-id="12" class="btn btn-outline-primary edit-document">Sửa</a>
+                                    <a href="/documents/12" class="btn btn-outline-danger delete-document">Xóa</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mt-3">
+                        <div>
+                            <select name="size" form="document-search" class="form-select submit-on-change">
+                                <option value="1">1</option>
+                                <option value="10" selected="selected">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div class="text-right pagination"><li class="page-item active"><a class="page-link" href="#" data-page="0">1</a></li><li class="page-item "><a class="page-link" href="#" data-page="1">2</a></li><li class="page-item "><a class="page-link" href="#" data-page="2">3</a></li><li class="page-item "><a class="page-link" href="#" data-page="3">4</a></li><li class="page-item "><a class="page-link" href="#" data-page="4">5</a></li><li class="page-item "><a class="page-link" href="#" data-page="5">6</a></li><li class="page-item "><a class="page-link" href="#" data-page="6">7</a></li><li class="page-item "><a class="page-link" href="#" data-page="7">8</a></li></div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="../js/utils.js"></script>
+        <script src="../js/menu.js"></script>
+        <script src="../js/player.js"></script>
+        <script src="../js/init.js"></script>
+    </body>
+</html>
