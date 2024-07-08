@@ -57,7 +57,30 @@
 }
 
 .avatar {
-    width: 60px;
-    height: 60px;
+    width: 130px;
+    height: 130px;
+    object-position: top;
     object-fit: cover;
+}
+
+.player-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 0 5px;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+}
+.player-status.playing {
+    background-color: var(--bs-success);
+}
+
+
+.player-status.injury {
+    background-color: var(--bs-warning);
+}
+
+.player-status.retire {
+    background-color: var(--bs-danger);
 }

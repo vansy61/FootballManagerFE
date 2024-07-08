@@ -161,8 +161,17 @@ const showPlayerProfile = async (playerId) => {
 }
 
 const showChartSalary = async ($modal, playerId) => {
+    // sống chậm lại ....
+    await sleep(1500);
+    // -----------------------
     let salaryData = await getSalaryData(playerId);
     $modal.find("#salary-chart").empty();
+
+    salaryData = salaryData.sort((a, b) => {
+        const weekA = parseInt(a.week.split('-W')[1]);
+        const weekB = parseInt(b.week.split('-W')[1]);
+        return weekA - weekB;
+    });
 
     var options = {
         series: [{
@@ -194,7 +203,14 @@ const showChartSalary = async ($modal, playerId) => {
             categories: salaryData.map(salary => {
                 return salary.week;
             }),
+        },
+        yaxis: {
+            labels: {
+                formatter: function (value) {
+                return formatVND(value);
+            }
         }
+}
     };
 
     var chart = new ApexCharts(document.querySelector("#salary-chart"), options);
@@ -333,7 +349,7 @@ const submitUpdatePlayer = async ($modal, playerId) => {
 const deletePlayer = async (target) => {
     try {
         await deletePlayerById(target.attr("href"));
-        target.closest("tr").fadeOut("slow", function() {
+        target.closest(".player-item").fadeOut("slow", function() {
             $(this).remove();
             showAlert("Xóa thành công", "success");
         });
@@ -345,53 +361,41 @@ const deletePlayer = async (target) => {
 
 
 const toTablePlayersTemplate = (players) => {
-    let rows = "";
+    let items = "";
     players.forEach(player => {
-        rows += `
-            <tr>
-                <td><img class="avatar" src="${BASE_URL}image/${player.avatar}"></td>
-                <td>${player.name}</td>
-                <td>${player.dob}</td>
-                <td>${player.homeTown}</td>
-                <td>${player?.position?.name}</td>
-                <td>${player.performance}</td>
-                <td>${formatVND(player.salary)}</td>
-                <td>
-                    <a href="#" class="btn btn-outline-info edit-player" data-id="${player.id}">
+        items += `
+            <div class="col-12 col-md-6 col-lg-3 player-item">
+            <div class="card shadow-sm border-0 mb-4 py-4">
+                <div class="card-body text-center">
+                    <div class="player-status ${player.status}">${playerStatusHuman(player.status)}</div>
+                  <img src="${BASE_URL}image/${player.avatar}" alt="avatar" class="rounded-circle img-fluid avatar">
+                  <h5 class="mt-3 mb-2">${player.name}</h5>
+                  <p class="text-muted mb-1">${player?.position?.name}</p>
+                  <p class="text-muted mb-1">${player.dob} | ${player.homeTown}</p>
+                  <p class="text-muted mb-4">${player.performance} | ${formatVND(player.salary)}</p>
+                  <div class="d-flex justify-content-center">
+                    <a href="#" class="btn btn-outline-info edit-player mx-1 btn-sm" data-id="${player.id}">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a href="#" class="btn btn-outline-info show-player" data-id="${player.id}">
+                    <a href="#" class="btn btn-outline-info show-player mx-1 btn-sm" data-id="${player.id}">
                         <i class="fa-solid fa-eye"></i>
                     </a>                    
-                    <a href="#" class="btn btn-outline-info pay-player" data-id="${player.id}">
+                    <a href="#" class="btn btn-outline-info pay-player  mx-1 btn-sm" data-id="${player.id}">
                         <i class="fa-solid fa-money-bill"></i>
                     </a>
-                    <a href="players/${player.id}" class="btn btn-outline-danger delete-player">
+                    <a href="players/${player.id}" class="btn btn-outline-danger delete-player  mx-1 btn-sm">
                         <i class="fas fa-trash-alt"></i>
                     </a>
-                </td>
-            </tr>
+                  </div>
+                </div>
+            </div>
+            </div>
+
         `;
     })
     return (`
-        <div class="table-responsive">
-       <table class="table table-bordered" >
-            <thead>
-                <tr>
-                    <th>Ảnh</th>
-                    <th>Tên</th>
-                    <th>Ngày Sinh</th>
-                    <th>Quê Quán</th>
-                    <th>Vị Trí</th>
-                    <th>Phong độ</th>
-                    <th>Mức Lương</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                ${rows}
-            </tbody>
-        </table>
+        <div class="row">
+            ${items}
         </div>
     `)
 }
@@ -603,4 +607,17 @@ const playerProfileTemplate = (player) => {
             </div>
       </div>
     `)
+}
+
+const playerStatusHuman = (status) => {
+    switch (status) {
+        case "playing":
+            return "Đang đá";
+        case "injury":
+            return "Chấn thương";
+        case "retire":
+            return "Giải nghệ";
+        default:
+            return "";
+    }
 }
