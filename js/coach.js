@@ -7,6 +7,17 @@ function showPageCoach() {
         type: "GET",
         url: "http://localhost:8080/api/coach",
         success: function (data) {
+            let itemHead=`
+            <tr>
+                        <th>Stt</th>
+                        <th>Tên</th>
+                        <th>Năm sinh</th>
+                        <th>Quê quán</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+            `
+
             let itemHtml = "";
             $.each(data.content, function (index, el) {
                 itemHtml += `
@@ -22,6 +33,7 @@ function showPageCoach() {
                 </tr>
                 `;
             })
+            $(".table-head").html(itemHead);
             $(".table-body").html(itemHtml)
             $(".detail").click(function () {
                 let id = $(this).data().id;
@@ -37,17 +49,19 @@ function showDetail(id) {
         type: "GET",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (dataDetail) {
+            let itemHead=`
+            <tr>
+                <th>Tên</th>
+                <th>Ngày sinh</th>
+                <th>Quê quán</th>
+                <th>Lương</th>
+                <th>Thưởng</th>
+                <th>Hồ sơ năng lực</th>
+                <th>Biểu đồ theo tuần</th>
+            </tr>
+            `
             let itemHtml1 = `
-<table>
-    <tr>
-        <td>Tên</td>
-        <td>Ngày sinh</td>
-        <td>Quê quán</td>
-        <td>Lương</td>
-        <td>Thưởng</td>
-        <td>Hồ sơ năng lực</td>
-        <td>Biểu đồ theo tuần</td>
-    </tr>
+     
     <tr>
         <td>${dataDetail.name}</td>
         <td>${dataDetail.dob}</td>
@@ -62,8 +76,10 @@ function showDetail(id) {
         <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
         </td>
     </tr>
-    </table>
+
     `;
+
+            $(".table-head").html(itemHead);
             $(".table-body").html(itemHtml1);
             $(".back").click(function (e) {
                 e.preventDefault();
