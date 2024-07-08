@@ -6,6 +6,10 @@ const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const formatVND = (number) => {
+    return number.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+}
+
 const loaderTemplate = () => {
     return (`
         <div class="loader">
@@ -31,4 +35,55 @@ const loaderTemplate = () => {
             </svg>
         </div>
     `)
+}
+
+
+const createPagination = (totalPages, currentPage) => {
+    let pagination = "";
+    for(let i = 0; i < totalPages; i++) {
+        pagination += `<li class="page-item ${i === currentPage ? "active" : ""}"><a class="page-link" href="#" data-page="${i}">${i + 1}</a></li>`;
+    }
+    return pagination;
+}
+
+
+const showAlert = (message, type, text) => {
+    Swal.fire({
+        icon: type,
+        title: message,
+        text: text
+    });
+}
+
+
+const addModal = (title, isShow, size = "modal-lg") => {
+    const $modal =  $(`
+    <div class="modal" tabindex="-1">
+      <div class="modal-dialog ${size}">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">${title}</h5>
+          </div>
+          <div class="modal-body">
+            ${loaderTemplate()}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary m-close" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-primary m-submit">Lưu</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    `);
+
+    $("body").append($modal);
+    const modal = new bootstrap.Modal($modal.get(0));
+    $modal.on('hidden.bs.modal', event => {
+        $modal.remove();
+    })
+    $modal.data("modal", modal);
+    if(isShow) {
+        modal.show();
+    }
+    return $modal;
 }
