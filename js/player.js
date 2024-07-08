@@ -166,9 +166,30 @@ const showPlayer = async ($modal, playerId) => {
 
     let player = await getPlayer(playerId);
     let template = playerProfileTemplate(player);
+    $("#profile-content").html(template);
 
+    $(".change-status-player").change(function () {
+        updatePlayerStatus($(this).val(), playerId);
+    })
 
+}
 
+const updatePlayerStatus = async (status, playerId) => {
+    try {
+        let formData = new FormData();
+        formData.append("status", status);
+        await updatePlayer(playerId, formData);
+        showAlert("Thành công", "success", "Cập nhật trạng thái thành công");
+        renderPlayersWithSearchForm();
+    } catch (error) {
+        let message = "";
+        for (const key in error.responseJSON) {
+            if (error.responseJSON.hasOwnProperty(key)) {
+                message += `${key}: ${error.responseJSON[key]}, `;
+            }
+        }
+        showAlert("Lỗi", "error", message);
+    }
 }
 
 const showPayPlayer = async (playerId) => {
@@ -466,20 +487,12 @@ const payPlayerTemplate = () => {
 
 const playerTemplate = () => {
     return (`
-        <div class="shadow-sm border p-2 rounded mb-3">
-            <div id="profile-content">
-                ${loaderTemplate()}
-            </div>
+        <div id="profile-content" class="mb-5">
+            ${loaderTemplate()}
         </div>
-        <div class="shadow-sm border p-2 rounded mb-3">
+        <div class="shadow p-3 rounded">
             <h5>Biểu đồ lương</h5>
             <div id="salary-chart">
-                ${loaderTemplate()}
-            </div>
-        </div>
-        <div class="shadow-sm border p-2 rounded mb-3">
-            <h5>Lịch sử lương</h5>
-            <div id="salary-info">
                 ${loaderTemplate()}
             </div>
         </div>
@@ -488,153 +501,64 @@ const playerTemplate = () => {
 
 const playerProfileTemplate = (player) => {
     return (`
-        <div class="row">
-        <div class="col-lg-4">
-          <div class="card mb-4">
-            <div class="card-body text-center">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
-              <h5 class="my-3">John Smith</h5>
-              <p class="text-muted mb-1">Full Stack Developer</p>
-              <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
-              <div class="d-flex justify-content-center mb-2">
-                <button type="button" data-mdb-button-init="" data-mdb-ripple-init="" class="btn btn-primary" data-mdb-button-initialized="true">Follow</button>
-                <button type="button" data-mdb-button-init="" data-mdb-ripple-init="" class="btn btn-outline-primary ms-1" data-mdb-button-initialized="true">Message</button>
-              </div>
+        <div class="row align-items-stretch">
+            <div class="col-lg-3">
+                <div class="shadow p-3 rounded">
+                <img src="${BASE_URL}image/${player.avatar}" alt="avatar" class="rounded img-fluid">
+                </div>
+                
             </div>
-          </div>
-          <div class="card mb-4 mb-lg-0">
-            <div class="card-body p-0">
-              <ul class="list-group list-group-flush rounded-3">
-                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                  <i class="fas fa-globe fa-lg text-warning"></i>
-                  <p class="mb-0">https://mdbootstrap.com</p>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                  <i class="fab fa-github fa-lg text-body"></i>
-                  <p class="mb-0">mdbootstrap</p>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                  <i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>
-                  <p class="mb-0">@mdbootstrap</p>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                  <i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>
-                  <p class="mb-0">mdbootstrap</p>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                  <i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>
-                  <p class="mb-0">mdbootstrap</p>
-                </li>
-              </ul>
+            <div class="col-lg-9">
+                <div class="shadow p-3 rounded h-100">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mb-0">${player.name}</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="form-check mx-2">
+                              <input 
+                                ${player.status == "playing" ? "checked" : ""} 
+                                class="form-check-input change-status-player" value="playing" type="radio" name="status" id="status-playing">
+                              <label class="form-check-label" for="status-playing">
+                                Đang đá
+                              </label>
+                            </div>
+                            <div class="form-check mx-2">
+                              <input 
+                                ${player.status == "injury" ? "checked" : ""} 
+                                class="form-check-input change-status-player" value="injury" type="radio" name="status" id="status-injury">
+                              <label class="form-check-label" for="status-injury">
+                                Chấn thương
+                              </label>
+                            </div>
+                            <div class="form-check mx-2">
+                              <input 
+                                ${player.status == "retire" ? "checked" : ""} 
+                                class="form-check-input change-status-player" value="retire" type="radio" name="status" id="status-retire">
+                              <label class="form-check-label" for="status-retire">
+                                Giải nghệ
+                              </label>
+                            </div>                                                        
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="row">
+                          <div class="col-12 col-lg-6">
+                            <p>Ngày sinh: <span class="text-muted">${player.dob}</span></p>
+                            <p>Quê quán: <span class="text-muted">${player.homeTown}</span></p>
+                            <p>Vị trí chơi: <span class="text-muted">${player.position?.name}</span></p>
+                            <p>Phong độ: <span class="text-muted">${player.performance}</span></p>
+                            <p>Chiều cao: <span class="text-muted">${player.height}</span></p>
+                          </div>
+                          <div class="col-12 col-lg-6">
+                            <p>Cân nặng: <span class="text-muted">${player.weight}</span></p>
+                            <p>Chỉ số BMI: <span class="text-muted">${player.height/player.weight}</span></p>
+                            <p>Lương cứng: <span class="text-muted">${formatVND(player.salary)}</span></p>
+                            <p>Xếp hạng: <span class="text-muted">${player.ranking}</span></p>
+                            <p>Hồ sơ năng lực: <span class="text-muted">${player.abilityProfile}</span></p>                          
+                          </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="col-lg-8">
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Full Name</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">Johnatan Smith</p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Email</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">example@example.com</p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Phone</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">(097) 234-5678</p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Mobile</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">(098) 765-4321</p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Address</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="card mb-4 mb-md-0">
-                <div class="card-body">
-                  <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status</p>
-                  <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                  <div class="progress rounded mb-2" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card mb-4 mb-md-0">
-                <div class="card-body">
-                  <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status</p>
-                  <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                  <div class="progress rounded mb-2" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     `)
 }
