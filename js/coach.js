@@ -7,7 +7,7 @@ function showPageCoach() {
         type: "GET",
         url: "http://localhost:8080/api/coach",
         success: function (data) {
-            let itemHead=`
+            let itemHead = `
             <tr>
                         <th>Stt</th>
                         <th>Tên</th>
@@ -28,7 +28,6 @@ function showPageCoach() {
                     <td>${el.homeTown}</td>
                     <td>
                     <a data-id="${el.id}" class="btn btn-outline-primary detail">chi tiết</a>
-                    <a href="/documents/28" data-id="28" class="btn btn-outline-primary edit">Sửa</a>
                     </td>
                 </tr>
                 `;
@@ -49,35 +48,36 @@ function showDetail(id) {
         type: "GET",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (dataDetail) {
-            let itemHead=`
+            let itemHead = `
             <tr>
                 <th>Tên</th>
                 <th>Ngày sinh</th>
                 <th>Quê quán</th>
-                <th>Lương</th>
-                <th>Thưởng</th>
+                <th>Lương cứng</th>
                 <th>Hồ sơ năng lực</th>
+                <th>Lương tuần</th>
                 <th>Biểu đồ theo tuần</th>
             </tr>
             `
             let itemHtml1 = `
      
-    <tr>
-        <td>${dataDetail.name}</td>
-        <td>${dataDetail.dob}</td>
-        <td>${dataDetail.homeTown}</td>
-        <td>${dataDetail.salary}</td>
-        <td>${dataDetail.salaries[0]}</td>
-        <td>${dataDetail.abilityProfile}</td>
-        <td></td>
-        <td>
-        <button class="btn btn-outline-danger back">Trở lại</button>
-        <a href="/documents/28" data-id="28" class="btn btn-outline-primary edit">Sửa</a>
-        <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
-        </td>
-    </tr>
+            <tr>
+                <td>${dataDetail.name}</td>
+                <td>${dataDetail.dob}</td>
+                <td>${dataDetail.homeTown}</td>
+                <td>${dataDetail.salary}</td>
+                <td>${dataDetail.abilityProfile}</td>
+                <td>${dataDetail.salary}</td>
+                <td></td>
+                <td>
+               
+                <a data-id="${dataDetail.id}" class="btn btn-outline-danger edit">Sửa</a>
+                <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
+                 <button class="btn btn-outline-danger back">Trở lại</button>
+                </td>
+            </tr>
 
-    `;
+                `;
 
             $(".table-head").html(itemHead);
             $(".table-body").html(itemHtml1);
@@ -89,6 +89,10 @@ function showDetail(id) {
                 let id = $(this).data().id;
                 deleteCoach(id);
 
+            });
+            $(".edit").click(function (e) {
+                let id = $(this).data().id;
+                showFormEdit(id);
             });
 
         }
@@ -138,7 +142,7 @@ function showFormAdd() {
             </tr>
             <tr>
                 <td><label for="password">Mật khẩu</label></td>
-                <td><input type="text" id="password" placeholder="Mật khẩu có chiều dài 6-8 ký tự"/></td>
+                <td><input type="password" id="password" placeholder="Mật khẩu có chiều dài 6-8 ký tự"/></td>
             </tr>
           
         </table>
@@ -179,6 +183,84 @@ function createCoach() {
             showPageCoach();
             $('.formCreate').remove();
             alert("Thêm thành công")
+        }
+    })
+}
+
+function showFormEdit(id) {
+    $.ajax({
+        type: "get",
+        url: "http://localhost:8080/api/coach/" + id,
+        success: function (data) {
+            let formUpdate = `
+             <h2>Cập nhật thông tin huấn luyện viên</h2>
+             <form id="form" novalidate="novalidate">
+           <table border="1" style="margin-top: 10px">
+            <tr>
+                <td><label for="name"> name</label></td>
+                <td><input type="text" id="name" value="${data.name}" /></td>
+            </tr>
+            <tr>
+                <td><label for="dob">Ngày sinh</label></td>
+                <td><input type="text" id="dob"  value="${data.dob}"/></td>
+            </tr>
+            <tr>
+                <td><label for="salary">Lương</label></td>
+                <td><input type="text" id="salary" value="${data.salary}"/></td>
+            </tr>
+            <tr>
+                <td><label for="homeTown">Quê quán</label></td>
+                <td><input type="text" id="homeTown" value="${data.homeTown}"/></td>
+            </tr>
+            <tr>
+                <td><label for="abilityProfile">Hồ sơ năng lực</label></td>
+                <td><input type="text" id="abilityProfile" value="${data.abilityProfile}"/></td>
+            </tr>
+            <tr>
+                <td><label for="email">email</label></td>
+                <td><input type="text" id="email" placeholder="Abc@gmail.com" value="${data.email}" /></td>
+            </tr>
+            <tr>
+                <td><label for="password">Mật khẩu</label></td>
+                <td><input type="password" id="password" value="${data.password}"/></td>
+            </tr>
+        </table>
+        <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger " id="update-coach"/>
+    </form>
+            `
+            $(".formUpdate").html(formUpdate);
+            $("#update-coach").click(function (e) {
+                e.preventDefault();
+                updateCoach(id);
+
+
+            })
+        }
+    })
+}
+
+function updateCoach() {
+    let id = $('#update-coach').data().id;
+    let name = $('#name').val();
+    let dob = $('#dob').val();
+    let salary = $('#salary').val();
+    let homeTown = $('#homeTown').val();
+    let abilityProfile = $('#abilityProfile').val();
+    let updateCoach = {
+        name: name,
+        dob: dob,
+        salary: salary,
+        homeTown: homeTown,
+        abilityProfile: abilityProfile,
+    }
+
+    $.ajax({
+        type: "put",
+        data: JSON.stringify(updateCoach),
+        url: "http://localhost:8080/api/coach/" + id,
+        success: function () {
+            $('.formUpdate').remove();
+            showPageCoach();
         }
     })
 }
