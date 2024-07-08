@@ -20,6 +20,13 @@ const getPlayer = (playerId) => {
     });
 }
 
+const getSalaryData = (playerId) => {
+    return $.ajax({
+        url: BASE_API_URL + "players/" + playerId + "/pays",
+        type: "GET"
+    });
+}
+
 
 const deletePlayerById = (url) => {
     return $.ajax({

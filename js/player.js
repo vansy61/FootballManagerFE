@@ -156,7 +156,49 @@ const showPlayerProfile = async (playerId) => {
     $modal.find(".modal-body").html(template);
 
     showPlayer($modal, playerId);
+    showChartSalary($modal, playerId);
 
+}
+
+const showChartSalary = async ($modal, playerId) => {
+    let salaryData = await getSalaryData(playerId);
+    $modal.find("#salary-chart").empty();
+
+    var options = {
+        series: [{
+            name: "Lương",
+            data: salaryData.map(salary => {
+                return salary.totalSalary;
+            })
+        }],
+        chart: {
+            height: 350,
+            type: 'line',
+            zoom: {
+                enabled: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        grid: {
+            row: {
+                colors: ['#f3f3f3', 'transparent'],
+                opacity: 0.5
+            },
+        },
+        xaxis: {
+            categories: salaryData.map(salary => {
+                return salary.week;
+            }),
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#salary-chart"), options);
+    chart.render();
 }
 
 const showPlayer = async ($modal, playerId) => {
@@ -166,9 +208,9 @@ const showPlayer = async ($modal, playerId) => {
 
     let player = await getPlayer(playerId);
     let template = playerProfileTemplate(player);
-    $("#profile-content").html(template);
+    $modal.find("#profile-content").html(template);
 
-    $(".change-status-player").change(function () {
+    $modal.find(".change-status-player").change(function () {
         updatePlayerStatus($(this).val(), playerId);
     })
 
