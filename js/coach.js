@@ -73,6 +73,7 @@ function showDetail(id) {
                
                 <a data-id="${dataDetail.id}" class="btn btn-outline-danger edit">Sửa</a>
                 <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
+                <a data-id="${dataDetail.id}" class="btn btn-outline-danger salary">Lương</a>
                  <button class="btn btn-outline-danger back">Trở lại</button>
                 </td>
             </tr>
@@ -86,13 +87,20 @@ function showDetail(id) {
                 showPageCoach();
             });
             $(".delete").click(function (e) {
+                e.preventDefault();
                 let id = $(this).data().id;
                 deleteCoach(id);
 
             });
             $(".edit").click(function (e) {
+                e.preventDefault();
                 let id = $(this).data().id;
                 showFormEdit(id);
+            });
+            $(".salary").click(function (e) {
+                e.preventDefault();
+                let id = $(this).data().id;
+                showFormSalary(id);
             });
 
         }
@@ -147,11 +155,13 @@ function showFormAdd() {
           
         </table>
 
-        <input type="submit" value="Save" class="btn btn-outline-danger " id="create-tour"/>
+        <input type="submit" value="Save" class="btn btn-outline-danger " id="create-coach"/>
     </form>
             `
-    $(".formCreate").html(formCreate);
-    $("#create-tour").click(function (e) {
+    const Modal = new bootstrap.Modal($("#exampleModal").get(0));
+    Modal.show();
+    $(".form-content").html(formCreate);
+    $("#create-coach").click(function (e) {
         e.preventDefault();
         createCoach()
     })
@@ -180,9 +190,10 @@ function createCoach() {
         data: JSON.stringify(newCoach),
         url: "http://localhost:8080/api/coach",
         success: function () {
-            showPageCoach();
-            $('.formCreate').remove();
+
+            $('.form-content').html('');
             alert("Thêm thành công")
+            showPageCoach();
         }
     })
 }
@@ -228,12 +239,12 @@ function showFormEdit(id) {
         <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger " id="update-coach"/>
     </form>
             `
-            $(".formUpdate").html(formUpdate);
+            const Modal = new bootstrap.Modal($("#exampleModal").get(0));
+            Modal.show();
+            $(".form-content").html(formUpdate);
             $("#update-coach").click(function (e) {
                 e.preventDefault();
                 updateCoach(id);
-
-
             })
         }
     })
@@ -259,8 +270,39 @@ function updateCoach() {
         data: JSON.stringify(updateCoach),
         url: "http://localhost:8080/api/coach/" + id,
         success: function () {
-            $('.formUpdate').remove();
+            $('.form-content').html('');
+            alert("Sửa thành công")
             showPageCoach();
+
+        }
+    })
+}
+
+function showFormSalary(id) {
+    $.ajax({
+        type: "get",
+        url: "http://localhost:8080/api/coach/" + id,
+        success: function (data) {
+            let formSalary =`
+           <h2>Lương của huấn luyện viên</h2>
+             <form id="form" novalidate="novalidate">
+           <table border="1" style="margin-top: 10px">
+            <tr>
+                <td><label for="salary">lương cứng</label></td>
+                <td><input type="text" id="salary" value="${data.salary}" /></td>
+            </tr>
+            <tr>
+                <td><label for="bonus">thưởng nóng</label></td>
+                <td><input type="text" id="bonus"  placeholder="Nhập thưởng nóng nếu có"/></td>
+            </tr>
+           
+            </table>
+            <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger " id="update-salary"/>
+            `
+            const Modal = new bootstrap.Modal($("#exampleModal").get(0));
+            Modal.show();
+            $('.form-content').html(formSalary);
+            $()
         }
     })
 }
