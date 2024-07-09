@@ -245,6 +245,9 @@ function createCoach() {
             $('.form-content').html('');
             alert("Thêm thành công")
             showPageCoach();
+        },
+        error: function () {
+            alert("Thêm thất bại")
         }
     })
 }
@@ -254,42 +257,96 @@ function showFormEdit(id) {
         type: "get",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (data) {
-            let formUpdate = `
-             <h2>Cập nhật thông tin huấn luyện viên</h2>
-             <form id="form" novalidate="novalidate">
-           <table border="1" style="margin-top: 10px">
-            <tr>
-                <td><label for="name"> name</label></td>
-                <td><input type="text" id="name" value="${data.name}" /></td>
-            </tr>
-            <tr>
-                <td><label for="dob">Ngày sinh</label></td>
-                <td><input type="text" id="dob"  value="${data.dob}"/></td>
-            </tr>
-            <tr>
-                <td><label for="salary">Lương</label></td>
-                <td><input type="text" id="salary" value="${data.salary}"/></td>
-            </tr>
-            <tr>
-                <td><label for="homeTown">Quê quán</label></td>
-                <td><input type="text" id="homeTown" value="${data.homeTown}"/></td>
-            </tr>
-            <tr>
-                <td><label for="abilityProfile">Hồ sơ năng lực</label></td>
-                <td><input type="text" id="abilityProfile" value="${data.abilityProfile}"/></td>
-            </tr>
-            <tr>
-                <td><label for="email">email</label></td>
-                <td><input type="text" id="email" placeholder="Abc@gmail.com" value="${data.email}" /></td>
-            </tr>
-            <tr>
-                <td><label for="password">Mật khẩu</label></td>
-                <td><input type="password" id="password" value="${data.password}"/></td>
-            </tr>
-        </table>
-        <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger " id="update-coach"/>
+            let formUpdate =`
+            <div class="container mt-5">
+    <h2 class="mb-4">Cập nhật thông tin huấn luyện viên</h2>
+    <form id="form" novalidate="novalidate">
+        <div class="form-group row mb-3">
+            <label for="name" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" value="${data.name}">
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label for="dob" class="col-sm-2 col-form-label">Ngày sinh</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="dob" value="${data.dob}">
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label for="salary" class="col-sm-2 col-form-label">Lương</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="salary" value="${data.salary}">
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label for="homeTown" class="col-sm-2 col-form-label">Quê quán</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="homeTown" value="${data.homeTown}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="abilityProfile" class="col-sm-2 col-form-label">Hồ sơ năng lực</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="abilityProfile" value="${data.abilityProfile}">
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label for="email" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="email" placeholder="Abc@gmail.com" value="${data.email}">
+            </div>
+        </div>
+        <div class="form-group row mb-3">
+            <label for="password" class="col-sm-2 col-form-label">Mật khẩu</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="password" value="${data.password}">
+            </div>
+        </div>
+        <div class="form-group row ">
+            <div class="col-sm-10 offset-sm-2 ">
+                <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger" id="update-coach">
+            </div>
+        </div>
     </form>
+</div>
             `
+    //         let formUpdate = `
+    //          <h2>Cập nhật thông tin huấn luyện viên</h2>
+    //          <form id="form" novalidate="novalidate">
+    //        <table border="1" style="margin-top: 10px">
+    //         <tr>
+    //             <td><label for="name"> name</label></td>
+    //             <td><input type="text" id="name" value="${data.name}" /></td>
+    //         </tr>
+    //         <tr>
+    //             <td><label for="dob">Ngày sinh</label></td>
+    //             <td><input type="text" id="dob"  value="${data.dob}"/></td>
+    //         </tr>
+    //         <tr>
+    //             <td><label for="salary">Lương</label></td>
+    //             <td><input type="text" id="salary" value="${data.salary}"/></td>
+    //         </tr>
+    //         <tr>
+    //             <td><label for="homeTown">Quê quán</label></td>
+    //             <td><input type="text" id="homeTown" value="${data.homeTown}"/></td>
+    //         </tr>
+    //         <tr>
+    //             <td><label for="abilityProfile">Hồ sơ năng lực</label></td>
+    //             <td><input type="text" id="abilityProfile" value="${data.abilityProfile}"/></td>
+    //         </tr>
+    //         <tr>
+    //             <td><label for="email">email</label></td>
+    //             <td><input type="text" id="email" placeholder="Abc@gmail.com" value="${data.email}" /></td>
+    //         </tr>
+    //         <tr>
+    //             <td><label for="password">Mật khẩu</label></td>
+    //             <td><input type="password" id="password" value="${data.password}"/></td>
+    //         </tr>
+    //     </table>
+    //     <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger " id="update-coach"/>
+    // </form>
+    //         `
             const Modal = new bootstrap.Modal($("#exampleModal").get(0));
             Modal.show();
             $(".form-content").html(formUpdate);
@@ -325,6 +382,9 @@ function updateCoach() {
             alert("Sửa thành công")
             showPageCoach();
 
+        },
+        error: function () {
+            alert("Sửa thất bại")
         }
     })
 }
@@ -334,22 +394,46 @@ function showFormSalary(id) {
         type: "get",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (data) {
-            let formSalary = `
-           <h2>Lương của huấn luyện viên</h2>
-             <form id="form" novalidate="novalidate">
-           <table border="1" style="margin-top: 10px">
-           <tr>
-                <td><label for="week">Tuần</label></td>
-                <td><input type="text" id="week"  placeholder="yy-mm-dd"/></td>
-            </tr>
-            <tr>
-                <td><label for="bonus">thưởng nóng</label></td>
-                <td><input type="text" id="bonus"  placeholder="Nhập thưởng nếu có"/></td>
-            </tr>
-            </table>
-            <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger " id="update-salary"/>
-            </form>
+            let formSalary =`
+            <div class="container mt-5">
+    <h2 class="mb-4">Lương của huấn luyện viên</h2>
+    <form id="form" novalidate="novalidate">
+        <div class="form-group row">
+            <label for="week" class="col-sm-2 col-form-label">Tuần</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="week" placeholder="yy-mm-dd">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="bonus" class="col-sm-2 col-form-label">Thưởng nóng</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="bonus" placeholder="Nhập thưởng nếu có">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10 offset-sm-2">
+                <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger" id="update-salary">
+            </div>
+        </div>
+    </form>
+</div>
             `
+           //  let formSalary = `
+           // <h2>Lương của huấn luyện viên</h2>
+           //   <form id="form" novalidate="novalidate">
+           // <table border="1" style="margin-top: 10px">
+           // <tr>
+           //      <td><label for="week">Tuần</label></td>
+           //      <td><input type="text" id="week"  placeholder="yy-mm-dd"/></td>
+           //  </tr>
+           //  <tr>
+           //      <td><label for="bonus">thưởng nóng</label></td>
+           //      <td><input type="text" id="bonus"  placeholder="Nhập thưởng nếu có"/></td>
+           //  </tr>
+           //  </table>
+           //  <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger " id="update-salary"/>
+           //  </form>
+           //  `
             const Modal = new bootstrap.Modal($("#exampleModal").get(0));
             Modal.show();
             $('.form-content').html(formSalary);
@@ -377,9 +461,37 @@ function addBonus(Modal) {
         success: function () {
             Modal.hide();
             alert("Thành công");
-
             showDetail();
-
+        },
+        error: function () {
+            alert("Sửa thất bại")
         }
     })
+}
+
+const validateCoach = () => {
+    $(".invalid-feedback").remove();
+    $(".is-invalid").removeClass("is-invalid");
+    let status = true;
+
+    const validateField = (field, condition, message) => {
+        if (condition) {
+            field.addClass("is-invalid");
+            field.after(`<div class='invalid-feedback'>${message}</div>`);
+            status = false;
+        }
+    };
+
+    validateField(
+        $("#email"),
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($("#email").val()),
+        "Email không hợp lệ"
+    );
+    validateField(
+        $("#password"),
+        $("#password").val().length < 6 || $("#password").val().length > 8,
+        "Vui lòng nhập tên"
+    );
+
+    return status;
 }
