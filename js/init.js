@@ -17,6 +17,10 @@ const run = () => {
         redirectTo("login.html");
         return;
     }
+    if(USER.authorities[0].authority === "ROLE_PLAYER" && !window.location.pathname.includes("profile.html")) {
+        redirectTo("profile.html");
+        return;
+    }
     $.ajaxSetup({
         dataType: "JSON",
         contentType: "application/json; charset=utf-8",
