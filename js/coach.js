@@ -55,7 +55,6 @@ function showDetail(id) {
                 <th>Quê quán</th>
                 <th>Lương cứng</th>
                 <th>Hồ sơ năng lực</th>
-                <th>Lương tuần</th>
                 <th>Biểu đồ theo tuần</th>
             </tr>
             `
@@ -67,7 +66,6 @@ function showDetail(id) {
                 <td>${dataDetail.homeTown}</td>
                 <td>${dataDetail.salary}</td>
                 <td>${dataDetail.abilityProfile}</td>
-                <td>${dataDetail.salary}</td>
                 <td></td>
                 <td>
                
@@ -288,21 +286,20 @@ function showFormSalary(id) {
              <form id="form" novalidate="novalidate">
            <table border="1" style="margin-top: 10px">
             <tr>
-                <td><label for="salary">lương cứng</label></td>
-                <td><input type="text" id="salary" value="${data.salary}" /></td>
-            </tr>
-            <tr>
                 <td><label for="bonus">thưởng nóng</label></td>
-                <td><input type="text" id="bonus"  placeholder="Nhập thưởng nóng nếu có"/></td>
+                <td><input type="text" id="bonus"  placeholder="Nhập thưởng nếu có"/></td>
             </tr>
-           
             </table>
             <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger " id="update-salary"/>
+            </form>
             `
             const Modal = new bootstrap.Modal($("#exampleModal").get(0));
             Modal.show();
             $('.form-content').html(formSalary);
-            $()
+            $('#update-salary').click(function (e){
+                e.preventDefault();
+
+            })
         }
     })
 }
