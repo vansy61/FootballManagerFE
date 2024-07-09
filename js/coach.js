@@ -119,42 +119,95 @@ function deleteCoach(id) {
 
 function showFormAdd() {
     let formCreate = `
-             <h2>Add new coach</h2>
-             <form id="form" novalidate="novalidate">
-        <table border="1" style="margin-top: 10px">
-            <tr>
-                <td><label for="name"> name</label></td>
-                <td><input type="text" id="name" placeholder="Abc" /></td>
-            </tr>
-            <tr>
-                <td><label for="dob">Ngày sinh</label></td>
-                <td><input type="text" id="dob"  placeholder="Năm/tháng/ngày"/></td>
-            </tr>
-            <tr>
-                <td><label for="salary">Lương</label></td>
-                <td><input type="text" id="salary" placeholder="0.00000"/></td>
-            </tr>
-            <tr>
-                <td><label for="homeTown">Quê quán</label></td>
-                <td><input type="text" id="homeTown" placeholder="Đà nẵng"/></td>
-            </tr>
-            <tr>
-                <td><label for="abilityProfile">Hồ sơ năng lực</label></td>
-                <td><input type="text" id="abilityProfile" placeholder="good"/></td>
-            </tr>
-            <tr>
-                <td><label for="email">email</label></td>
-                <td><input type="text" id="email" placeholder="Abc@gmail.com" /></td>
-            </tr>
-            <tr>
-                <td><label for="password">Mật khẩu</label></td>
-                <td><input type="password" id="password" placeholder="Mật khẩu có chiều dài 6-8 ký tự"/></td>
-            </tr>
-          
-        </table>
-
-        <input type="submit" value="Save" class="btn btn-outline-danger " id="create-coach"/>
+<div class="container mt-5">
+    <h2 class="mb-4">Thêm mới huấn luận viên</h2>
+    <form id="form" novalidate="novalidate">
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10 mb-4">
+                <input type="text" class="form-control" id="name" placeholder="Abc">
+            </div>
+        </div>
+        <div class="form-group row mb-4">
+            <label for="dob" class="col-sm-2 col-form-label ">Ngày sinh</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="dob" placeholder="Năm/tháng/ngày">
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label for="salary" class="col-sm-2 col-form-label">Lương</label>
+            <div class="col-sm-10 mb-4">
+                <input type="text" class="form-control" id="salary" placeholder="0.00000">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="homeTown" class="col-sm-2 col-form-label">Quê quán</label>
+            <div class="col-sm-10 mb-4">
+                <input type="text" class="form-control" id="homeTown" placeholder="Đà nẵng">
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label for="abilityProfile" class="col-sm-2 col-form-label">Hồ sơ năng lực</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="abilityProfile" placeholder="good">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label mb-4">Email</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="email" placeholder="Abc@gmail.com">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="password" class="col-sm-2 col-form-label">Mật khẩu</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="password" placeholder="Mật khẩu có chiều dài 6-8 ký tự">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10 offset-sm-2">
+                <input type="submit" value="Save" class="btn btn-outline-danger" id="create-coach">
+            </div>
+        </div>
     </form>
+</div>
+
+<!--             <h2>Add new coach</h2>-->
+<!--             <form id="form" novalidate="novalidate">-->
+<!--        <table border="1" style="margin-top: 10px">-->
+<!--            <tr>-->
+<!--                <td><label for="name"> name</label></td>-->
+<!--                <td><input type="text" id="name" placeholder="Abc" /></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><label for="dob">Ngày sinh</label></td>-->
+<!--                <td><input type="text" id="dob"  placeholder="Năm/tháng/ngày"/></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><label for="salary">Lương</label></td>-->
+<!--                <td><input type="text" id="salary" placeholder="0.00000"/></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><label for="homeTown">Quê quán</label></td>-->
+<!--                <td><input type="text" id="homeTown" placeholder="Đà nẵng"/></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><label for="abilityProfile">Hồ sơ năng lực</label></td>-->
+<!--                <td><input type="text" id="abilityProfile" placeholder="good"/></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><label for="email">email</label></td>-->
+<!--                <td><input type="text" id="email" placeholder="Abc@gmail.com" /></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><label for="password">Mật khẩu</label></td>-->
+<!--                <td><input type="password" id="password" placeholder="Mật khẩu có chiều dài 6-8 ký tự"/></td>-->
+<!--            </tr>-->
+<!--          -->
+<!--        </table>-->
+
+<!--        <input type="submit" value="Save" class="btn btn-outline-danger " id="create-coach"/>-->
+<!--    </form>-->
             `
     const Modal = new bootstrap.Modal($("#exampleModal").get(0));
     Modal.show();
@@ -281,10 +334,14 @@ function showFormSalary(id) {
         type: "get",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (data) {
-            let formSalary =`
+            let formSalary = `
            <h2>Lương của huấn luyện viên</h2>
              <form id="form" novalidate="novalidate">
            <table border="1" style="margin-top: 10px">
+           <tr>
+                <td><label for="week">Tuần</label></td>
+                <td><input type="text" id="week"  placeholder="yy-mm-dd"/></td>
+            </tr>
             <tr>
                 <td><label for="bonus">thưởng nóng</label></td>
                 <td><input type="text" id="bonus"  placeholder="Nhập thưởng nếu có"/></td>
@@ -296,10 +353,33 @@ function showFormSalary(id) {
             const Modal = new bootstrap.Modal($("#exampleModal").get(0));
             Modal.show();
             $('.form-content').html(formSalary);
-            $('#update-salary').click(function (e){
+            $('#update-salary').click(function (e) {
                 e.preventDefault();
+                addBonus(Modal);
 
             })
+        }
+    })
+}
+
+function addBonus(Modal) {
+    let id = $('#update-salary').data().id;
+    let bonus = $('#bonus').val();
+    let week = $('#week').val()
+    let newBonus = {
+        bonus: bonus,
+        week: week
+    }
+    $.ajax({
+        type: "post",
+        data: JSON.stringify(newBonus),
+        url: "http://localhost:8080/api/coach/money/" + id,
+        success: function () {
+            Modal.hide();
+            alert("Thành công");
+
+            showDetail();
+
         }
     })
 }
