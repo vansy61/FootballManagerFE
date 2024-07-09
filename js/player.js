@@ -363,6 +363,17 @@ const deletePlayer = async (target) => {
 const toTablePlayersTemplate = (players) => {
     let items = "";
     players.forEach(player => {
+        let removeBtn = (`
+            <a href="players/${player.id}" class="btn btn-outline-danger delete-player  mx-1 btn-sm">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+        `)
+
+        let payBtn = (`
+            <a href="#" class="btn btn-outline-info pay-player  mx-1 btn-sm" data-id="${player.id}">
+                <i class="fa-solid fa-money-bill"></i>
+            </a>
+        `)
         items += `
             <div class="col-12 col-md-6 col-lg-3 player-item">
             <div class="card shadow-sm border-0 mb-4 py-4">
@@ -380,12 +391,9 @@ const toTablePlayersTemplate = (players) => {
                     <a href="#" class="btn btn-outline-info show-player mx-1 btn-sm" data-id="${player.id}">
                         <i class="fa-solid fa-eye"></i>
                     </a>                    
-                    <a href="#" class="btn btn-outline-info pay-player  mx-1 btn-sm" data-id="${player.id}">
-                        <i class="fa-solid fa-money-bill"></i>
-                    </a>
-                    <a href="players/${player.id}" class="btn btn-outline-danger delete-player  mx-1 btn-sm">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
+
+                    ${USER.authorities[0].authority === "ROLE_ADMIN"? payBtn : ""}
+                    ${USER.authorities[0].authority === "ROLE_ADMIN"? removeBtn : ""}
                   </div>
                 </div>
             </div>
