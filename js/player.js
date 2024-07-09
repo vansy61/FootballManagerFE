@@ -355,7 +355,7 @@ const deletePlayer = async (target) => {
         });
     } catch (error) {
         console.log(error);
-        showAlert("Lỗi", "error", "Không thể xóa tài liệu");
+        showAlert("Lỗi", "error", "Không thể xóa cầu thủ!");
     }
 }
 

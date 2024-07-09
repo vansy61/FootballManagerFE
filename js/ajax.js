@@ -9,7 +9,10 @@ const getPositions = () => {
 const getPlayers = (search) => {
     return $.ajax({
         url: BASE_API_URL + "players?" + search,
-        type: "GET"
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + USER.token
+        }
     });
 }
 
@@ -64,6 +67,15 @@ const createPayPlayer = (id, data) => {
         data: JSON.stringify(data)
     });
 }
+
+
+const getReportPlayerSalary = () => {
+    return $.ajax({
+        url: BASE_API_URL + "reports/player-salary",
+        type: "GET"
+    });
+}
+
 
 
 $(document).on("keypress",".submit-on-enter",function(e) {
