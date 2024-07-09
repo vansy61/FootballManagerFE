@@ -7,33 +7,26 @@ function showPageCoach() {
         type: "GET",
         url: "http://localhost:8080/api/coach",
         success: function (data) {
-            let itemHead = `
-            <tr>
-                        <th>Stt</th>
-                        <th>Tên</th>
-                        <th>Năm sinh</th>
-                        <th>Quê quán</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-            `
-
             let itemHtml = "";
             $.each(data.content, function (index, el) {
-                itemHtml += `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${el.name}</td>
-                    <td>${el.dob}</td>
-                    <td>${el.homeTown}</td>
-                    <td>
+                itemHtml += (`
+            <div class="col-12 col-md-6 col-lg-3 player-item">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body text-center">
+                  <h5 class="mt-3 mb-2">${el.name}</h5>
+                  <p class="text-muted mb-1">${el.dob} </p>
+                  <p class="text-muted mb-1">${el.homeTown}</p>
+                  <div class="d-flex justify-content-center">
                     <a data-id="${el.id}" class="btn btn-outline-primary detail">chi tiết</a>
-                    </td>
-                </tr>
-                `;
+
+                  </div>
+                </div>
+            </div>
+            </div>
+
+                `);
             })
-            $(".table-head").html(itemHead);
-            $(".table-body").html(itemHtml)
+            $("#list-coach").html(itemHtml)
             $(".detail").click(function () {
                 let id = $(this).data().id;
                 showDetail(id)
@@ -48,38 +41,52 @@ function showDetail(id) {
         type: "GET",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (dataDetail) {
-            let itemHead = `
-            <tr>
-                <th>Tên</th>
-                <th>Ngày sinh</th>
-                <th>Quê quán</th>
-                <th>Lương cứng</th>
-                <th>Hồ sơ năng lực</th>
-                <th>Biểu đồ theo tuần</th>
-            </tr>
-            `
             let itemHtml1 = `
-     
-            <tr>
-                <td>${dataDetail.name}</td>
-                <td>${dataDetail.dob}</td>
-                <td>${dataDetail.homeTown}</td>
-                <td>${dataDetail.salary}</td>
-                <td>${dataDetail.abilityProfile}</td>
-                <td></td>
-                <td>
-               
-                <a data-id="${dataDetail.id}" class="btn btn-outline-danger edit">Sửa</a>
-                <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
-                <a data-id="${dataDetail.id}" class="btn btn-outline-danger salary">Lương</a>
-                 <button class="btn btn-outline-danger back">Trở lại</button>
-                </td>
-            </tr>
+    <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+            <div class="col-md-4">
+            <img src="..." class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+            <div class="card-body">
+            <h5 class="card-title">${dataDetail.name}</h5>
+            <p class="card-text">Ngày sinh : ${dataDetail.dob}</p>
+            <p class="card-text">Quê quán : ${dataDetail.homeTown}</p>
+            <p class="card-text">Lương : ${dataDetail.salary}</p>
+            <p class="card-text">Kỹ năng : ${dataDetail.abilityProfile}</p>
+            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            <a data-id="${dataDetail.id}" class="btn btn-outline-danger edit">Sửa</a>
+             <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
+             <a data-id="${dataDetail.id}" class="btn btn-outline-danger salary">Lương</a>
+             <button class="btn btn-outline-danger back">Trở lại</button>
+             <div id="chart"></div>
 
-                `;
+        </div>
+    </div>
+  </div>
+</div>
+            `
+            // let itemHtml1 = `
+            // <tr>
+            //     <td>${dataDetail.name}</td>
+            //     <td>${dataDetail.dob}</td>
+            //     <td>${dataDetail.homeTown}</td>
+            //     <td>${dataDetail.salary}</td>
+            //     <td>${dataDetail.abilityProfile}</td>
+            //     <td></td>
+            //     <td>
+            //
+            //     <a data-id="${dataDetail.id}" class="btn btn-outline-danger edit">Sửa</a>
+            //     <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
+            //     <a data-id="${dataDetail.id}" class="btn btn-outline-danger salary">Lương</a>
+            //      <button class="btn btn-outline-danger back">Trở lại</button>
+            //     </td>
+            // </tr>
+            //
+            //     `
+            ;
 
-            $(".table-head").html(itemHead);
-            $(".table-body").html(itemHtml1);
+            $("#list-coach").html(itemHtml1);
             $(".back").click(function (e) {
                 e.preventDefault();
                 showPageCoach();
@@ -158,7 +165,7 @@ function showFormAdd() {
                 <input type="text" class="form-control" id="email" placeholder="Abc@gmail.com">
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label for="password" class="col-sm-2 col-form-label">Mật khẩu</label>
             <div class="col-sm-10">
                 <input type="password" class="form-control" id="password" placeholder="Mật khẩu có chiều dài 6-8 ký tự">
@@ -495,3 +502,23 @@ const validateCoach = () => {
 
     return status;
 }
+
+
+
+
+var options = {
+    chart: {
+        type: 'bar'
+    },
+    series: [{
+        name: 'sales',
+        data: [90,40,45,50,49,60,70,91,125]
+    }],
+    xaxis: {
+        categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+    }
+}
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+chart.render();
