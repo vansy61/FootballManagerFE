@@ -22,8 +22,21 @@ const login = async () => {
     try {
         const res = await postLogin();
         localStorage.setItem('userData', JSON.stringify(res));
-        showAlert("Đăng nhập thành công", "success", "Hệ thống sẽ tự động chuyển trang!");
-        await sleep(2000);
+
+        Swal.fire({
+            title: "Đăng nhập thành công",
+            icon: "success",
+            html: "<p class='mb-5'>Hệ thống sẽ tự động chuyển trang sau <span id='count-down'>5</span> giây</p>",
+            showCloseButton: false,
+            showCancelButton: false,
+            showConfirmButton: false
+        });
+
+        setInterval(() => {
+            $("#count-down").text(parseInt($("#count-down").text()) - 1);
+        }, 1000)
+
+        await sleep(5000);
         if(res.authorities[0].authority === "ROLE_COACH" || res.authorities[0].authority === "ROLE_ADMIN") {
             redirectTo("player.html");
         }else {

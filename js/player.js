@@ -10,6 +10,10 @@ const showPage = () => {
         e.preventDefault();
         showNewPlayer();
     });
+
+
+    initSlider();
+
 }
 
 const showNewPlayer = async () => {

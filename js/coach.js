@@ -11,26 +11,54 @@ function showPageCoach() {
             let itemHtml = "";
             $.each(data.content, function (index, el) {
                 itemHtml += (`
-            <div class="col-12 col-md-6 col-lg-3 player-item">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-body text-center">
-                  <h5 class="mt-3 mb-2">${el.name}</h5>
-                  <p class="text-muted mb-1">${el.dob} </p>
-                  <p class="text-muted mb-1">${el.homeTown}</p>
-                  <div class="d-flex justify-content-center">
-                    <a data-id="${el.id}" class="btn btn-outline-primary detail">chi tiết</a>
-                  </div>
-                </div>
-            </div>
-            </div>
+                    <div class="col-12 col-md-6 col-lg-3 player-item">
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-body text-center">
+                            <img src="../image/ava3.webp" alt="avatar" class="rounded-circle img-fluid avatar">
+                          <h5 class="mt-3 mb-2">${el.name}</h5>
+                          <p class="text-muted mb-1">${el.dob} </p>
+                          <p class="text-muted mb-1">${el.homeTown}</p>
+                          <div class="d-flex justify-content-center">
+                            <a data-id="${el.id}" class="btn btn-outline-info mx-1 btn-sm edit"><i class="fas fa-edit"></i></a>
+                          
+                            <a data-id="${el.id}" class="btn btn-outline-info mx-1 btn-sm detail">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            
+                            <a data-id="${el.id}" class="btn btn-outline-info mx-1 btn-sm salary"><i class="fa-solid fa-money-bill"></i></a>
+                            <a data-id="${el.id}" class="btn btn-outline-danger mx-1 btn-sm delete"><i class="fas fa-trash-alt"></i></a>
+                            
+                          </div>
+                        </div>
+                    </div>
+                    </div>
 
                 `);
+
+            })
+
             $("#list-coach").html(itemHtml);
             $(".detail").click(function () {
                 let id = $(this).data().id;
                 showDetail(id)
             });
-        })
+
+            $(".delete").click(function (e) {
+                e.preventDefault();
+                let id = $(this).data().id;
+                deleteCoach(id);
+
+            });
+            $(".edit").click(function (e) {
+                e.preventDefault();
+                let id = $(this).data().id;
+                showFormEdit(id);
+            });
+            $(".salary").click(function (e) {
+                e.preventDefault();
+                let id = $(this).data().id;
+                showFormSalary(id);
+            });
         }
     })
 }
@@ -41,14 +69,8 @@ function showDetail(id) {
         url: "http://localhost:8080/api/coach/" + id,
         success: function (dataDetail) {
             let itemHtml1 = (`<div class="row align-items-stretch">
-            <div class="col-lg-3">
-                <div class="shadow p-3 rounded">
-                <img src="../image/NguyenMinhPhuong.jpg" height="100" width="100" class="rounded img-fluid">
-                </div>
-                
-            </div>
-            <div class="col-lg-9">
-                <div class="shadow p-3 rounded h-100">
+            <div class="col-12">
+                <div class="shadow-sm p-3 rounded h-100">
                     <div class="d-flex justify-content-between">
                         <h5 class="mb-0">${dataDetail.name}</h5>
                     </div>
@@ -57,7 +79,7 @@ function showDetail(id) {
                           <div class="col-12 col-lg-6">
                             <p>Ngày sinh: <span class="text-muted">${dataDetail.dob}</span></p>
                             <p>Quê quán: <span class="text-muted">${dataDetail.homeTown}</span></p>
-                            <p>Liên hệ :  <span class="text-muted">${dataDetail.user.email}</span></p>        
+                            <p>Email:  <span class="text-muted">${dataDetail.user.email}</span></p>        
                           </div>
                           <div class="col-12 col-lg-6">
                             <p>Lương cứng: <span class="text-muted">${formatVND(dataDetail.salary)}</span></p>
@@ -69,72 +91,44 @@ function showDetail(id) {
                 </div>
             </div>
       </div>`);
-            let itemChart = (`<div id="chart"></div>`);
-            let itemhtml3 = (`
-                <a data-id="${dataDetail.id}" class="btn btn-outline-danger edit">Sửa</a>
-                <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
-                <a data-id="${dataDetail.id}" class="btn btn-outline-danger salary">Lương</a>
-                <a class="btn btn-outline-danger back">Trở lại</a>
-            `);
+            let itemChart = (`<div class="shadow-sm p-3 rounded h-100 mt-3"><div id="chart"></div></div>`);
 
-            const Modal = new bootstrap.Modal($("#exampleModal").get(0));
-            Modal.show();
-            $(".modal-footer").html(itemhtml3);
-            $("#exampleModal .modal-body").append(itemChart);
-            $(".form-content").html(itemHtml1);
-            $(".back").click(function (e) {
-                e.preventDefault();
-                Modal.hide();
-            });
-            $(".delete").click(function (e) {
-                e.preventDefault();
-                let id = $(this).data().id;
-                deleteCoach(id,Modal);
+            const $modal = addModal("Chi tiết huấn luyện viên", true);
 
-            });
-            $(".edit").click(function (e) {
-                e.preventDefault();
-                let id = $(this).data().id;
-                showFormEdit(id);
-            });
-            $(".salary").click(function (e) {
-                e.preventDefault();
-                Modal.hide();
-                let id = $(this).data().id;
-                showFormSalary(id);
-            });
+
+
+            $modal.find(".modal-body").html(itemHtml1).append(itemChart);
 
 
             var options = {
-    chart: {
-        type: "bar"
-    },
-    series: [
-        {
-            name: "sales",
-            data: [30, 40, 45, 50, 49, 60, 70, 91, 125]
-        }
-    ],
-    xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-    }
-};
+                chart: {
+                    type: "bar"
+                },
+                series: [
+                    {
+                        name: "sales",
+                        data: [30, 40, 45, 50, 49, 60, 70, 91, 125]
+                    }
+                ],
+                xaxis: {
+                    categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+                }
+            };
 
-var chart = new ApexCharts(document.querySelector("#chart"), options);
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
 
-chart.render();
+            chart.render();
 
         }
     })
 }
 
-function deleteCoach(id,Modal) {
+function deleteCoach(id) {
     $.ajax({
         type: "delete",
         url: "http://localhost:8080/api/coach/" + id,
         success: function () {
-            Modal.hide();
-            alert("Xóa thành công");
+            showAlert("Xóa thành công", "success");
             showPageCoach();
         }
 
@@ -143,8 +137,6 @@ function deleteCoach(id,Modal) {
 
 function showFormAdd() {
     let formCreate = `
-<div class="container mt-5">
-    <h2 class="mb-4">Thêm mới huấn luận viên</h2>
     <form id="form" novalidate="novalidate">
         <div class="form-group row">
             <label for="name" class="col-sm-2 col-form-label">Name</label>
@@ -188,25 +180,18 @@ function showFormAdd() {
                 <input type="password" class="form-control" id="password" placeholder="Mật khẩu có chiều dài 6-8 ký tự">
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-sm-10 offset-sm-2">
-                <input type="submit" value="Save" class="btn btn-outline-danger" id="create-coach">
-            </div>
-        </div>
     </form>
-</div>
-
             `
-    const Modal = new bootstrap.Modal($("#exampleModal").get(0));
-    Modal.show();
-    $(".form-content").html(formCreate);
-    $("#create-coach").click(function (e) {
+    const $modal = addModal("Thêm mới huấn luyện viên", true);
+    $modal.find(".modal-body").html(formCreate);
+
+    $modal.find(".m-submit").click(function (e) {
         e.preventDefault();
-        createCoach(Modal)
+        createCoach($modal)
     })
 }
 
-function createCoach(Modal) {
+function createCoach($modal) {
     let name = $('#name').val();
     let dob = $('#dob').val();
     let salary = $('#salary').val();
@@ -230,13 +215,12 @@ function createCoach(Modal) {
         url: "http://localhost:8080/api/coach",
         success: function () {
             $('.form-content').html('');
-            alert("Thêm thành công");
-            // $(".form-content").remove();
-            Modal.hide();
+            showAlert("Thêm thành công", "success");
             showPageCoach();
+            $modal.data().modal.hide();
         },
         error: function () {
-            alert("Thêm thất bại")
+            showAlert("Thêm thất bại", "error");
         }
     })
 }
@@ -246,9 +230,7 @@ function showFormEdit(id) {
         type: "get",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (data) {
-            let formUpdate =(`
-            <div class="container mt-5">
-    <h2 class="mb-4">Cập nhật thông tin huấn luyện viên</h2>
+            let formUpdate = (`
     <form id="form" novalidate="novalidate">
         <div class="form-group row mb-3">
             <label for="name" class="col-sm-2 col-form-label">Name</label>
@@ -280,29 +262,21 @@ function showFormEdit(id) {
                 <input type="text" class="form-control" id="abilityProfile" value="${data.abilityProfile}">
             </div>
         </div>
-        
-        <div class="form-group row ">
-            <div class="col-sm-10 offset-sm-2 ">
-                <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger" id="update-coach">
-            </div>
-        </div>
     </form>
-</div>
             `)
 
-            const Modal = new bootstrap.Modal($("#exampleModal").get(0));
-            Modal.show();
-            $(".form-content").html(formUpdate);
-            $("#update-coach").click(function (e) {
+            const $modal = addModal("Thêm mới huấn luyện viên", true);
+            $modal.find(".modal-body").html(formUpdate);
+
+            $modal.find(".m-submit").click(function (e) {
                 e.preventDefault();
-                updateCoach(id);
+                updateCoach(id, $modal);
             })
         }
     })
 }
 
-function updateCoach() {
-    let id = $('#update-coach').data().id;
+function updateCoach(id, $modal) {
     let name = $('#name').val();
     let dob = $('#dob').val();
     let salary = $('#salary').val();
@@ -321,13 +295,14 @@ function updateCoach() {
         data: JSON.stringify(updateCoach),
         url: "http://localhost:8080/api/coach/" + id,
         success: function () {
-            $('.form-content').html('');
-            alert("Sửa thành công")
-            showDetail(id);
+            showAlert("Sửa thành công", "success");
+            showPageCoach(id);
+            $modal.data().modal.hide();
+
 
         },
         error: function () {
-            alert("Sửa thất bại")
+            showAlert("Sửa thất bại", "error");
         }
     })
 }
@@ -337,14 +312,12 @@ function showFormSalary(id) {
         type: "get",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (data) {
-            let formSalary =(`
-            <div class="container mt-5">
-    <h2 class="mb-4">Lương của huấn luyện viên</h2>
+            let formSalary = (`
     <form id="form" novalidate="novalidate">
-        <div class="form-group row">
+        <div class="form-group row mb-2">
             <label for="week" class="col-sm-2 col-form-label">Tuần</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="week" placeholder="yy-mm-dd">
+                <input type="week" class="form-control" id="week">
             </div>
         </div>
         <div class="form-group row">
@@ -353,29 +326,23 @@ function showFormSalary(id) {
                 <input type="text" class="form-control" id="bonus" placeholder="Nhập thưởng nếu có">
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-sm-10 offset-sm-2">
-                <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger" id="update-salary">
-            </div>
-        </div>
     </form>
-</div>
             `)
 
-            const Modal = new bootstrap.Modal($("#exampleModal").get(0));
-            Modal.show();
-            $('.form-content').html(formSalary);
-            $('#update-salary').click(function (e) {
-                e.preventDefault();
-                addBonus(Modal);
 
+            const $modal = addModal("Thêm lương huấn luyện viên", true);
+            $modal.find(".modal-body").html(formSalary);
+
+            $modal.find(".m-submit").click(function (e) {
+                e.preventDefault();
+                addBonus(id, $modal);
             })
+
         }
     })
 }
 
-function addBonus(Modal) {
-    let id = $('#update-salary').data().id;
+function addBonus(id, $modal) {
     let bonus = $('#bonus').val();
     let week = $('#week').val()
     let newBonus = {
@@ -387,41 +354,15 @@ function addBonus(Modal) {
         data: JSON.stringify(newBonus),
         url: "http://localhost:8080/api/coach/money/" + id,
         success: function () {
-            Modal.hide();
-            alert("Thành công");
-            showDetail();
+            showAlert("Thêm lương thành công", "success");
+            showPageCoach(id);
+            $modal.data().modal.hide();
         },
         error: function () {
-            alert("Sửa thất bại")
+            showAlert("Thêm lương thất bại", "error");
+
         }
     })
-}
-
-const validateCoach = () => {
-    $(".invalid-feedback").remove();
-    $(".is-invalid").removeClass("is-invalid");
-    let status = true;
-
-    const validateField = (field, condition, message) => {
-        if (condition) {
-            field.addClass("is-invalid");
-            field.after(`<div class='invalid-feedback'>${message}</div>`);
-            status = false;
-        }
-    };
-
-    validateField(
-        $("#email"),
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($("#email").val()),
-        "Email không hợp lệ"
-    );
-    validateField(
-        $("#password"),
-        $("#password").val().length < 6 || $("#password").val().length > 8,
-        "Vui lòng nhập tên"
-    );
-
-    return status;
 }
 
 
