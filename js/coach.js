@@ -122,23 +122,22 @@ function showDetail(id) {
                 <a data-id="${dataDetail.id}" class="btn btn-outline-danger edit">Sửa</a>
                 <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
                 <a data-id="${dataDetail.id}" class="btn btn-outline-danger salary">Lương</a>
-                <button class="btn btn-outline-danger back">Trở lại</button>`);
+                <a class="btn btn-outline-danger back">Trở lại</a>
+            `);
 
             const Modal = new bootstrap.Modal($("#exampleModal").get(0));
             Modal.show();
             $(".modal-footer").html(itemhtml3);
             $("#exampleModal .modal-body").append(itemChart);
-
             $(".form-content").html(itemHtml1);
-
             $(".back").click(function (e) {
                 e.preventDefault();
-                showPageCoach();
+                Modal.hide();
             });
             $(".delete").click(function (e) {
                 e.preventDefault();
                 let id = $(this).data().id;
-                deleteCoach(id);
+                deleteCoach(id,Modal);
 
             });
             $(".edit").click(function (e) {
@@ -148,6 +147,7 @@ function showDetail(id) {
             });
             $(".salary").click(function (e) {
                 e.preventDefault();
+                Modal.hide();
                 let id = $(this).data().id;
                 showFormSalary(id);
             });
@@ -176,13 +176,14 @@ chart.render();
     })
 }
 
-function deleteCoach(id) {
+function deleteCoach(id,Modal) {
     $.ajax({
         type: "delete",
         url: "http://localhost:8080/api/coach/" + id,
         success: function () {
-            showPageCoach();
+            Modal.hide();
             alert("Xóa thành công");
+            showPageCoach();
         }
 
     })
@@ -249,11 +250,11 @@ function showFormAdd() {
     $(".form-content").html(formCreate);
     $("#create-coach").click(function (e) {
         e.preventDefault();
-        createCoach()
+        createCoach(Modal)
     })
 }
 
-function createCoach() {
+function createCoach(Modal) {
     let name = $('#name').val();
     let dob = $('#dob').val();
     let salary = $('#salary').val();
@@ -276,10 +277,10 @@ function createCoach() {
         data: JSON.stringify(newCoach),
         url: "http://localhost:8080/api/coach",
         success: function () {
-
             $('.form-content').html('');
             alert("Thêm thành công");
-            $(".form-content").remove();
+            // $(".form-content").remove();
+            Modal.hide();
             showPageCoach();
         },
         error: function () {
@@ -293,7 +294,7 @@ function showFormEdit(id) {
         type: "get",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (data) {
-            let formUpdate =`
+            let formUpdate =(`
             <div class="container mt-5">
     <h2 class="mb-4">Cập nhật thông tin huấn luyện viên</h2>
     <form id="form" novalidate="novalidate">
@@ -335,43 +336,8 @@ function showFormEdit(id) {
         </div>
     </form>
 </div>
-            `
-    //         let formUpdate = `
-    //          <h2>Cập nhật thông tin huấn luyện viên</h2>
-    //          <form id="form" novalidate="novalidate">
-    //        <table border="1" style="margin-top: 10px">
-    //         <tr>
-    //             <td><label for="name"> name</label></td>
-    //             <td><input type="text" id="name" value="${data.name}" /></td>
-    //         </tr>
-    //         <tr>
-    //             <td><label for="dob">Ngày sinh</label></td>
-    //             <td><input type="text" id="dob"  value="${data.dob}"/></td>
-    //         </tr>
-    //         <tr>
-    //             <td><label for="salary">Lương</label></td>
-    //             <td><input type="text" id="salary" value="${data.salary}"/></td>
-    //         </tr>
-    //         <tr>
-    //             <td><label for="homeTown">Quê quán</label></td>
-    //             <td><input type="text" id="homeTown" value="${data.homeTown}"/></td>
-    //         </tr>
-    //         <tr>
-    //             <td><label for="abilityProfile">Hồ sơ năng lực</label></td>
-    //             <td><input type="text" id="abilityProfile" value="${data.abilityProfile}"/></td>
-    //         </tr>
-    //         <tr>
-    //             <td><label for="email">email</label></td>
-    //             <td><input type="text" id="email" placeholder="Abc@gmail.com" value="${data.email}" /></td>
-    //         </tr>
-    //         <tr>
-    //             <td><label for="password">Mật khẩu</label></td>
-    //             <td><input type="password" id="password" value="${data.password}"/></td>
-    //         </tr>
-    //     </table>
-    //     <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger " id="update-coach"/>
-    // </form>
-    //         `
+            `)
+
             const Modal = new bootstrap.Modal($("#exampleModal").get(0));
             Modal.show();
             $(".form-content").html(formUpdate);
@@ -405,7 +371,7 @@ function updateCoach() {
         success: function () {
             $('.form-content').html('');
             alert("Sửa thành công")
-            showPageCoach();
+            showDetail(id);
 
         },
         error: function () {
@@ -419,7 +385,7 @@ function showFormSalary(id) {
         type: "get",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (data) {
-            let formSalary =`
+            let formSalary =(`
             <div class="container mt-5">
     <h2 class="mb-4">Lương của huấn luyện viên</h2>
     <form id="form" novalidate="novalidate">
@@ -442,23 +408,8 @@ function showFormSalary(id) {
         </div>
     </form>
 </div>
-            `
-           //  let formSalary = `
-           // <h2>Lương của huấn luyện viên</h2>
-           //   <form id="form" novalidate="novalidate">
-           // <table border="1" style="margin-top: 10px">
-           // <tr>
-           //      <td><label for="week">Tuần</label></td>
-           //      <td><input type="text" id="week"  placeholder="yy-mm-dd"/></td>
-           //  </tr>
-           //  <tr>
-           //      <td><label for="bonus">thưởng nóng</label></td>
-           //      <td><input type="text" id="bonus"  placeholder="Nhập thưởng nếu có"/></td>
-           //  </tr>
-           //  </table>
-           //  <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger " id="update-salary"/>
-           //  </form>
-           //  `
+            `)
+
             const Modal = new bootstrap.Modal($("#exampleModal").get(0));
             Modal.show();
             $('.form-content').html(formSalary);
