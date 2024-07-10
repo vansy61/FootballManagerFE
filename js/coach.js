@@ -1,56 +1,7 @@
 function showPage() {
     showPageCoach()
 }
-// $(document).ready(function () {
-//     loadCoach(0);
-//
-//     $(document).on('click', '.page-link', function (e) {
-//         e.preventDefault();
-//         var page = $(this).data('page');
-//         loadCoach(page);
-//     });
 
-
-// function showPageCoach() {
-//     $.ajax({
-//         type: "GET",
-//         url: "http://localhost:8080/api/coach/devide?page=",
-//         success: function (data) {
-//             let itemHtml = "";
-//             $.each(data.content, function (index, el) {
-//                 itemHtml += (`
-//             <div class="col-12 col-md-6 col-lg-3 player-item">
-//             <div class="card shadow-sm border-0 mb-4">
-//                 <div class="card-body text-center">
-//                   <h5 class="mt-3 mb-2">${el.name}</h5>
-//                   <p class="text-muted mb-1">${el.dob} </p>
-//                   <p class="text-muted mb-1">${el.homeTown}</p>
-//                   <div class="d-flex justify-content-center">
-//                     <a data-id="${el.id}" class="btn btn-outline-primary detail">chi tiết</a>
-//
-//                   </div>
-//                 </div>
-//             </div>
-//             </div>
-//
-//                 `);
-//             })
-//
-//             $("#list-coach").html(itemHtml);
-//             let pagination = '';
-//             for (var i = 0; i < data.totalPages; i++) {
-//                 pagination += '<li class="page-item ' + (i === data.number ? 'active' : '') + '">';
-//                 pagination += '<a class="page-link" href="#" data-page="' + i + '">' + (i + 1) + '</a>';
-//                 pagination += '</li>';
-//             }
-//             $('#pagination').html(pagination);
-//             $(".detail").click(function () {
-//                 let id = $(this).data().id;
-//                 showDetail(id)
-//             });
-//         }
-//     })
-// }
 
 function showPageCoach() {
     $.ajax({
