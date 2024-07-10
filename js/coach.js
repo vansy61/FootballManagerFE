@@ -1,7 +1,56 @@
 function showPage() {
     showPageCoach()
 }
+// $(document).ready(function () {
+//     loadCoach(0);
+//
+//     $(document).on('click', '.page-link', function (e) {
+//         e.preventDefault();
+//         var page = $(this).data('page');
+//         loadCoach(page);
+//     });
 
+
+// function showPageCoach() {
+//     $.ajax({
+//         type: "GET",
+//         url: "http://localhost:8080/api/coach/devide?page=",
+//         success: function (data) {
+//             let itemHtml = "";
+//             $.each(data.content, function (index, el) {
+//                 itemHtml += (`
+//             <div class="col-12 col-md-6 col-lg-3 player-item">
+//             <div class="card shadow-sm border-0 mb-4">
+//                 <div class="card-body text-center">
+//                   <h5 class="mt-3 mb-2">${el.name}</h5>
+//                   <p class="text-muted mb-1">${el.dob} </p>
+//                   <p class="text-muted mb-1">${el.homeTown}</p>
+//                   <div class="d-flex justify-content-center">
+//                     <a data-id="${el.id}" class="btn btn-outline-primary detail">chi tiết</a>
+//
+//                   </div>
+//                 </div>
+//             </div>
+//             </div>
+//
+//                 `);
+//             })
+//
+//             $("#list-coach").html(itemHtml);
+//             let pagination = '';
+//             for (var i = 0; i < data.totalPages; i++) {
+//                 pagination += '<li class="page-item ' + (i === data.number ? 'active' : '') + '">';
+//                 pagination += '<a class="page-link" href="#" data-page="' + i + '">' + (i + 1) + '</a>';
+//                 pagination += '</li>';
+//             }
+//             $('#pagination').html(pagination);
+//             $(".detail").click(function () {
+//                 let id = $(this).data().id;
+//                 showDetail(id)
+//             });
+//         }
+//     })
+// }
 function showPageCoach() {
     $.ajax({
         type: "GET",
@@ -18,75 +67,70 @@ function showPageCoach() {
                   <p class="text-muted mb-1">${el.homeTown}</p>
                   <div class="d-flex justify-content-center">
                     <a data-id="${el.id}" class="btn btn-outline-primary detail">chi tiết</a>
-
                   </div>
                 </div>
             </div>
             </div>
 
                 `);
-            })
-            $("#list-coach").html(itemHtml)
+            $("#list-coach").html(itemHtml);
             $(".detail").click(function () {
                 let id = $(this).data().id;
                 showDetail(id)
             });
+        })
         }
     })
 }
-
 
 function showDetail(id) {
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/api/coach/" + id,
         success: function (dataDetail) {
-            let itemHtml1 = `
-    <div class="card mb-3" style="max-width: 540px;">
-            <div class="row g-0">
-            <div class="col-md-4">
-            <img src="..." class="img-fluid rounded-start" alt="...">
+            let itemHtml1 = (`<div class="row align-items-stretch">
+            <div class="col-lg-3">
+                <div class="shadow p-3 rounded">
+                <img src="../image/NguyenMinhPhuong.jpg" height="100" width="100" class="rounded img-fluid">
+                </div>
+                
             </div>
-            <div class="col-md-8">
-            <div class="card-body">
-            <h5 class="card-title">${dataDetail.name}</h5>
-            <p class="card-text">Ngày sinh : ${dataDetail.dob}</p>
-            <p class="card-text">Quê quán : ${dataDetail.homeTown}</p>
-            <p class="card-text">Lương : ${dataDetail.salary}</p>
-            <p class="card-text">Kỹ năng : ${dataDetail.abilityProfile}</p>
-            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-            <a data-id="${dataDetail.id}" class="btn btn-outline-danger edit">Sửa</a>
-             <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
-             <a data-id="${dataDetail.id}" class="btn btn-outline-danger salary">Lương</a>
-             <button class="btn btn-outline-danger back">Trở lại</button>
-             <div id="chart"></div>
+            <div class="col-lg-9">
+                <div class="shadow p-3 rounded h-100">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mb-0">${dataDetail.name}</h5>
+                    </div>
+                    <div class="mt-4">
+                        <div class="row">
+                          <div class="col-12 col-lg-6">
+                            <p>Ngày sinh: <span class="text-muted">${dataDetail.dob}</span></p>
+                            <p>Quê quán: <span class="text-muted">${dataDetail.homeTown}</span></p>
+                            <p>Liên hệ :  <span class="text-muted">${dataDetail.user.email}</span></p>        
+                          </div>
+                          <div class="col-12 col-lg-6">
+                            <p>Lương cứng: <span class="text-muted">${formatVND(dataDetail.salary)}</span></p>
+                            <p>Kỹ năng: <span class="text-muted">${dataDetail.abilityProfile}</span></p>                          
+                          </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+      </div>`);
+            let itemChart = (`<div id="chart"></div>`);
+            let itemhtml3 = (`
+                <a data-id="${dataDetail.id}" class="btn btn-outline-danger edit">Sửa</a>
+                <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
+                <a data-id="${dataDetail.id}" class="btn btn-outline-danger salary">Lương</a>
+                <button class="btn btn-outline-danger back">Trở lại</button>`);
 
-        </div>
-    </div>
-  </div>
-</div>
-            `
-            // let itemHtml1 = `
-            // <tr>
-            //     <td>${dataDetail.name}</td>
-            //     <td>${dataDetail.dob}</td>
-            //     <td>${dataDetail.homeTown}</td>
-            //     <td>${dataDetail.salary}</td>
-            //     <td>${dataDetail.abilityProfile}</td>
-            //     <td></td>
-            //     <td>
-            //
-            //     <a data-id="${dataDetail.id}" class="btn btn-outline-danger edit">Sửa</a>
-            //     <a data-id="${dataDetail.id}" class="btn btn-outline-danger delete">Xóa</a>
-            //     <a data-id="${dataDetail.id}" class="btn btn-outline-danger salary">Lương</a>
-            //      <button class="btn btn-outline-danger back">Trở lại</button>
-            //     </td>
-            // </tr>
-            //
-            //     `
-            ;
+            const Modal = new bootstrap.Modal($("#exampleModal").get(0));
+            Modal.show();
+            $(".modal-footer").html(itemhtml3);
+            $("#exampleModal .modal-body").append(itemChart);
 
-            $("#list-coach").html(itemHtml1);
+            $(".form-content").html(itemHtml1);
+
             $(".back").click(function (e) {
                 e.preventDefault();
                 showPageCoach();
@@ -107,6 +151,26 @@ function showDetail(id) {
                 let id = $(this).data().id;
                 showFormSalary(id);
             });
+
+
+            var options = {
+    chart: {
+        type: "bar"
+    },
+    series: [
+        {
+            name: "sales",
+            data: [30, 40, 45, 50, 49, 60, 70, 91, 125]
+        }
+    ],
+    xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+    }
+};
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+chart.render();
 
         }
     })
@@ -179,42 +243,6 @@ function showFormAdd() {
     </form>
 </div>
 
-<!--             <h2>Add new coach</h2>-->
-<!--             <form id="form" novalidate="novalidate">-->
-<!--        <table border="1" style="margin-top: 10px">-->
-<!--            <tr>-->
-<!--                <td><label for="name"> name</label></td>-->
-<!--                <td><input type="text" id="name" placeholder="Abc" /></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><label for="dob">Ngày sinh</label></td>-->
-<!--                <td><input type="text" id="dob"  placeholder="Năm/tháng/ngày"/></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><label for="salary">Lương</label></td>-->
-<!--                <td><input type="text" id="salary" placeholder="0.00000"/></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><label for="homeTown">Quê quán</label></td>-->
-<!--                <td><input type="text" id="homeTown" placeholder="Đà nẵng"/></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><label for="abilityProfile">Hồ sơ năng lực</label></td>-->
-<!--                <td><input type="text" id="abilityProfile" placeholder="good"/></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><label for="email">email</label></td>-->
-<!--                <td><input type="text" id="email" placeholder="Abc@gmail.com" /></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><label for="password">Mật khẩu</label></td>-->
-<!--                <td><input type="password" id="password" placeholder="Mật khẩu có chiều dài 6-8 ký tự"/></td>-->
-<!--            </tr>-->
-<!--          -->
-<!--        </table>-->
-
-<!--        <input type="submit" value="Save" class="btn btn-outline-danger " id="create-coach"/>-->
-<!--    </form>-->
             `
     const Modal = new bootstrap.Modal($("#exampleModal").get(0));
     Modal.show();
@@ -250,7 +278,8 @@ function createCoach() {
         success: function () {
 
             $('.form-content').html('');
-            alert("Thêm thành công")
+            alert("Thêm thành công");
+            $(".form-content").remove();
             showPageCoach();
         },
         error: function () {
@@ -298,18 +327,7 @@ function showFormEdit(id) {
                 <input type="text" class="form-control" id="abilityProfile" value="${data.abilityProfile}">
             </div>
         </div>
-        <div class="form-group row mb-3">
-            <label for="email" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="email" placeholder="Abc@gmail.com" value="${data.email}">
-            </div>
-        </div>
-        <div class="form-group row mb-3">
-            <label for="password" class="col-sm-2 col-form-label">Mật khẩu</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control" id="password" value="${data.password}">
-            </div>
-        </div>
+        
         <div class="form-group row ">
             <div class="col-sm-10 offset-sm-2 ">
                 <input data-id="${data.id}" type="submit" value="Save" class="btn btn-outline-danger" id="update-coach">
@@ -504,21 +522,3 @@ const validateCoach = () => {
 }
 
 
-
-
-var options = {
-    chart: {
-        type: 'bar'
-    },
-    series: [{
-        name: 'sales',
-        data: [90,40,45,50,49,60,70,91,125]
-    }],
-    xaxis: {
-        categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
-    }
-}
-
-var chart = new ApexCharts(document.querySelector("#chart"), options);
-
-chart.render();
