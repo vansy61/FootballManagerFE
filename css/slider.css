@@ -1,0 +1,90 @@
+
+
+.ui-slider-active {
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+}
+
+.salary-slider .slider {
+    margin-top: 15px;
+}
+
+.slider {
+    --primary: #275efe;
+    --handle: #fff;
+    --handle-active: #becfff;
+    --handle-hover: #e9efff;
+    --handle-border: 2px solid var(--primary);
+    --line: #cdd9ed;
+    --line-active: var(--primary);
+    height: 23px;
+    width: 100%;
+    position: relative;
+    pointer-events: none;
+}
+.slider .ui-slider-handle {
+    --y: 0;
+    --background: var(--handle);
+    cursor: -webkit-grab;
+    cursor: grab;
+    -webkit-tap-highlight-color: transparent;
+    top: 0;
+    width: 23px;
+    height: 23px;
+    transform: translateX(-50%);
+    position: absolute;
+    outline: none;
+    display: block;
+    pointer-events: auto;
+}
+.slider .ui-slider-handle div {
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    transition: background 0.4s ease;
+    transform: translateY(calc(var(--y) * 1px));
+    border: var(--handle-border);
+    background: var(--background);
+}
+.slider .ui-slider-handle:hover {
+    --background: var(--handle-hover);
+}
+.slider .ui-slider-handle:active {
+    --background: var(--handle-active);
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+}
+.slider svg {
+    --stroke: var(--line);
+    display: block;
+    height: 83px;
+}
+.slider svg path {
+    fill: none;
+    stroke: var(--stroke);
+    stroke-width: 4;
+}
+.slider .active, .slider > svg {
+    position: absolute;
+    top: -30px;
+    height: 83px;
+}
+.slider > svg {
+    left: 0;
+    width: 100%;
+}
+.slider .active {
+    position: absolute;
+    overflow: hidden;
+    left: calc(var(--l) * 1px);
+    right: calc(var(--r) * 1px);
+}
+.slider .active svg {
+    --stroke: var(--line-active);
+    position: relative;
+    left: calc(var(--l) * -1px);
+    right: calc(var(--r) * -1px);
+}
+.slider .active svg path {
+    stroke-width: 5;
+}
