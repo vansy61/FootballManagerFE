@@ -2,7 +2,6 @@ function showPage() {
     showPageCoach()
 }
 
-
 function showPageCoach() {
     $.ajax({
         type: "GET",
@@ -46,7 +45,9 @@ function showPageCoach() {
             $(".delete").click(function (e) {
                 e.preventDefault();
                 let id = $(this).data().id;
-                deleteCoach(id);
+                if (confirm("Bạn thực sự muốn xóa?")) {
+                    deleteCoach(id);
+                }
 
             });
             $(".edit").click(function (e) {
@@ -92,14 +93,8 @@ function showDetail(id) {
             </div>
       </div>`);
             let itemChart = (`<div class="shadow-sm p-3 rounded h-100 mt-3"><div id="chart"></div></div>`);
-
             const $modal = addModal("Chi tiết huấn luyện viên", true);
-
-
-
             $modal.find(".modal-body").html(itemHtml1).append(itemChart);
-
-
             var options = {
                 chart: {
                     type: "bar"
@@ -162,7 +157,7 @@ function showFormAdd() {
                 <input type="text" class="form-control" id="homeTown" placeholder="Đà nẵng">
             </div>
         </div>
-        <div class="form-group row ">
+        <div class="form-group row mb-3 ">
             <label for="abilityProfile" class="col-sm-2 col-form-label">Hồ sơ năng lực</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="abilityProfile" placeholder="good">
@@ -298,8 +293,6 @@ function updateCoach(id, $modal) {
             showAlert("Sửa thành công", "success");
             showPageCoach(id);
             $modal.data().modal.hide();
-
-
         },
         error: function () {
             showAlert("Sửa thất bại", "error");
