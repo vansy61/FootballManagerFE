@@ -611,7 +611,7 @@ const playerProfileTemplate = (player) => {
                             <p>Chỉ số BMI: <span class="text-muted">${player.height/player.weight}</span></p>
                             <p>Lương cứng: <span class="text-muted">${formatVND(player.salary)}</span></p>
                             <p>Xếp hạng: <span class="text-muted">${player.ranking}</span></p>
-                            <p>Hồ sơ năng lực: <span class="text-muted">${player.abilityProfile}</span></p>                          
+                            <p>Hồ sơ năng lực: <span class="text-muted"><a href="#">${player.abilityProfile}</a></span></p>                          
                           </div>
                         </div>
                     </div>
